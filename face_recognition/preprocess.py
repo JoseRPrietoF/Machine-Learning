@@ -23,6 +23,10 @@ def proces_dataset_faces(path, blackAndWhite=True, width = 196, height=196):
     X = []
     Y = []
     print("Path %s" % path)
+
+    if not os.path.isdir("data"):
+        os.mkdir("data")
+    maybe_download(path)
     for directory in os.listdir(path):
         print("Accesing on %s " % directory)
         for filepath in os.listdir(path+directory):
@@ -95,7 +99,7 @@ def maybe_download(path = "data/preprocess_faces"):
             dest = "tmp/"+file_name.split(".")[0]
             zip_handler.extractall(dest)
             #file_ame/file_name/female-male-other/ - name/jpgs
-            copy_files(dest)
+            copy_files(dest,path)
 
 
         shutil.rmtree('tmp')
@@ -130,4 +134,7 @@ def copy_overwritting(path, dest):
             print("%s - %s " % (os.path.join(root, name),full_dest))
             shutil.copy(os.path.join(root, name), full_dest)
 
-maybe_download()
+#maybe_download("foo")
+
+#X,Y = proces_dataset_faces("data/foo")
+#print(Y)
