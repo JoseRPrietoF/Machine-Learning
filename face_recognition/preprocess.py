@@ -92,7 +92,7 @@ def maybe_download(path = "data/preprocess_faces"):
         for url in urls:
             file_name = url.split('/')[-1]
             fullfilename = os.path.join('tmp', file_name)
-            print "Downloading: %s" % (file_name)
+            print("Downloading: %s" % (file_name))
             u = urllib.urlretrieve(url,fullfilename)
             print("Saving %s in %s" % (file_name, fullfilename))
             zip_handler = zipfile.ZipFile(fullfilename, "r")
