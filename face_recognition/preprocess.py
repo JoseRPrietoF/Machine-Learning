@@ -1,6 +1,17 @@
 import os
 from PIL import Image
 import numpy as np
+import shutil, urllib, zipfile
+
+try:
+    # Python 2
+    import urllib2
+except Exception:
+    # Python 3
+    import urllib.request
+
+    import urllib.request.urlretrieve
+
 
 """Returns:
 X = np array with all image samples
@@ -66,3 +77,57 @@ def image2pixelarray(filepath, w,h,blackWhite = False):
     greyscale_map = np.array(greyscale_map)
     greyscale_map = greyscale_map.reshape((height, width))
     return greyscale_map
+
+urls = ["http://cswww.essex.ac.uk/mv/allfaces/faces94.zip",
+       "http://cswww.essex.ac.uk/mv/allfaces/faces95.zip",
+       "http://cswww.essex.ac.uk/mv/allfaces/faces96.zip"]
+def maybe_download(path = "data/preprocess_faces"):
+    if not os.path.isdir(path):
+        if not os.path.isdir("tmp"):
+            os.mkdir("tmp")
+        for url in urls:
+            file_name = url.split('/')[-1]
+            fullfilename = os.path.join('tmp', file_name)
+            print "Downloading: %s" % (file_name)
+            u = urllib.urlretrieve(url,fullfilename)
+            print("Saving %s in %s" % (file_name, fullfilename))
+            zip_handler = zipfile.ZipFile(fullfilename, "r")
+            dest = "tmp/"+file_name.split(".")[0]
+            zip_handler.extractall(dest)
+            #file_ame/file_name/female-male-other/ - name/jpgs
+            copy_files(dest)
+
+
+        shutil.rmtree('tmp')
+
+#recursively
+def copy_files(path,dest = "data/preprocess_faces/", extension="jpg"):
+    has_jgp = False
+    for directory in os.listdir(path):
+        if directory.endswith(".jpg"):
+            has_jgp = True
+    if not has_jgp:
+        for directory in os.listdir(path):
+            full_dir = path +"/"+ directory
+            copy_files(full_dir,dest,extension)
+    else: #copy dir on dest
+        #copy
+        print("Copying %s into %s" % (path,dest))
+        copy_overwritting(path, dest)
+
+def copy_overwritting(path, dest):
+    #path ex = "tmp/faces94/faces94/female/asamma
+    dir_name = path.split("/")[-1]
+    full_dest = os.path.join(dest, dir_name)
+    print("verifying %s exists" % dest)
+    if not os.path.isdir(dest):
+        os.mkdir(dest)
+    print("verifying %s exists" % full_dest)
+    if not os.path.isdir(full_dest):
+        os.mkdir(full_dest)
+    for root, dirs, files in os.walk(path, topdown=False):
+        for name in files:
+            print("%s - %s " % (os.path.join(root, name),full_dest))
+            shutil.copy(os.path.join(root, name), full_dest)
+
+maybe_download()

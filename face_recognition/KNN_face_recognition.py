@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from preprocess import proces_dataset_faces
 from sklearn import svm
 
-path_faces = "/home/jose/PycharmProjects/MachineLearningCourse/face_recognition/data/preproces_faces/"
+path_faces = "/home/jose/PycharmProjects/MachineLearningCourse/face_recognition/data/preprocess_faces/"
 
 X,Y = proces_dataset_faces(path_faces)
 
