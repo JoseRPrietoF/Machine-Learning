@@ -3,15 +3,6 @@ from PIL import Image
 import numpy as np
 import shutil, urllib, zipfile
 
-try:
-    # Python 2
-    import urllib2
-except Exception:
-    # Python 3
-    import urllib.request
-
-    import urllib.request.urlretrieve
-
 
 """Returns:
 X = np array with all image samples

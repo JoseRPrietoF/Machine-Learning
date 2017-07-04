@@ -2,7 +2,6 @@ from sklearn.decomposition import PCA
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 from preprocess import proces_dataset_faces
-from sklearn import svm
 
 path_faces = "data/preprocess_faces/"
 
@@ -43,37 +42,4 @@ print( "%d muestras mal clasificadas de %d" % ( (Y_test != y_pred).sum(), len(Y_
 print( "Accuracy = %.1f%%" % ( ( 100.0 * (Y_test == y_pred).sum() ) / len(Y_test) ) )
 print("-"*50)
 
-print("Training SVM")
-clf_SVM = svm.SVC()
-clf_SVM.fit(X_train, Y_train)
-
-print("Predicting with SVM")
-y_pred = clf_SVM.predict( X_test )
-
-print("-"*50)
-print("SVM ")
-print( "%d muestras mal clasificadas de %d" % ( (Y_test != y_pred).sum(), len(Y_test) ) )
-print( "Accuracy = %.1f%%" % ( ( 100.0 * (Y_test == y_pred).sum() ) / len(Y_test) ) )
-print("-"*50)
-
-"""
-jose_Test = "test/jose.jpg"
-alba_Test = "test/alba.jpeg"
-
-jt = image2pixelarray(jose_Test,512,512)
-at = image2pixelarray(alba_Test,512,512)
-jt = np.array(jt).ravel()
-at = np.array(at).ravel()
-
-jt = pca.transform(jt)
-at = pca.transform(at)
-
-print("jt shape %s " % str(jt.shape))
-
-jose = classifier.predict( jt )
-alba = classifier.predict( at )
-
-print("Jose %s Alba %s " % (jose, alba))
-
-"""
 

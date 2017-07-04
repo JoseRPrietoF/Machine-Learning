@@ -1,0 +1,13 @@
+Training SVM
+/home/jose/anaconda2/lib/python2.7/site-packages/sklearn/svm/base.py:220: ConvergenceWarning: Solver terminated early (max_iter=10000).  Consider pre-processing your data with StandardScaler or MinMaxScaler.
+  % self.max_iter, ConvergenceWarning)
+Best estimator for : SVC(C=0.001, cache_size=200, class_weight=None, coef0=0.0,
+  decision_function_shape=None, degree=1, gamma=0.001, kernel='poly',
+  max_iter=10000, probability=False, random_state=None, shrinking=True,
+  tol=0.001, verbose=False) 
+Predicting with SVM
+--------------------------------------------------
+SVM 
+22 muestras mal clasificadas de 1495
+Accuracy = 98.5%
+--------------------------------------------------
