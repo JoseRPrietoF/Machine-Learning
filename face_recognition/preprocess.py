@@ -127,5 +127,5 @@ def copy_overwritting(path, dest):
 
 #maybe_download("foo")
 
-#X,Y = proces_dataset_faces("data/foo")
-#print(Y)
+X,Y = proces_dataset_faces("data/foo/")
+print(Y)

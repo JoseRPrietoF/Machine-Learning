@@ -9,10 +9,13 @@ import matplotlib.pyplot as plt
 from matplotlib import style
 style.use('ggplot')
 quandl.ApiConfig.api_key = 'xbPnXMAxKyEVqwzW9TWv'
+
 df  = quandl.get_table('WIKI/PRICES')
 print(df.head())
+
 df['HL_PCT'] =(df['adj_high']-df['adj_close'])/df['adj_close'] * 100.0
 df['PCT_change'] =(df['adj_close']-df['adj_open']) / df['adj_open'] * 100.0
+
 df = df[['adj_close','HL_PCT','PCT_change','adj_volume']]
 forecast_col = df['adj_close']
 forecast_out = int(math.ceil(0.001*len(forecast_col)))
@@ -38,13 +41,19 @@ x_train,x_test,y_train,y_test=cross_validation.train_test_split(X,Y, test_size=0
 clf=linear_model.LinearRegression(n_jobs=-1)
 clf=clf.fit(x_train,y_train)
 accuracy=clf.score(x_test,y_test)
-forecast_set=clf.predict(X_lately)
+forecast_set = clf.predict(X_lately)
 #forecast_set_whole=clf.predict(X)
 print(accuracy,forecast_set)#,forecast_set_whole)
 forecast_set=np.array(forecast_set)
 df['Forecast'] = np.nan
 
+print("-"*100)
+print(df['Forecast'])
+
 last_date=df.iloc[-1].name
+print("-"*100)
+
+print(last_date)
 last_unix=last_date#.timestamp()
 one_day=1
 next_unix=last_unix+one_day
@@ -53,12 +62,26 @@ for i in forecast_set:
  next_date = next_unix#datetime.datetime.fromtimestamp(next_unix)
  next_unix+=one_day
  df.loc[next_date]=[np.nan for _ in range(len(df.columns)-1)]+[i]
+ """df.loc[next_date] = 
+ adj_close          NaN
+HL_PCT             NaN
+PCT_change         NaN
+adj_volume         NaN
+label              NaN
+Forecast      3.110064
+Name: 9990, dtype: float64"""
 
+print("Forecast %s " % forecast_out)
 print(df.label[:-forecast_out])
 print(forecast_set)
+
+
 df['adj_close'].plot()
 df['Forecast'].plot()
+
 plt.legend(loc=4)
+
 plt.xlabel('Date')
 plt.ylabel('Price')
+
 plt.show()
